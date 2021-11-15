@@ -1,5 +1,6 @@
-from _typeshed import Self
 import numpy as np
+
+# hello world
 
 class task:
     def __init__(self, name = "", rt = 0, p = 0, et = 0, ddl = 0, periodic = True) -> None:
@@ -44,5 +45,54 @@ class task:
         if (periodic != -1):
             self.periodic = periodic
 
+    def show_task_info(self) -> str:
+        """[show the task info]
+        """
+        return "'" + str(self.name) + "': {'release time': " + str(self.release_time) + ", 'period': " + str(self.period) + ", 'WCET': " + str(self.execution_time) + ", 'deadline': " + str(self.deadline) + "}"
+
+class task_queue:
+    def __init__(self) -> None:
+        """[initialize the task queue]
+        """
+        self.task_queue = []
+
+    def append_task(self, i_task: task) -> None:
+        """[append the task after the original task queue]
+
+        Args:
+            i_task (task): [the task]
+        """
+        self.task_queue.append(i_task)
+
+    def load_task_queue(self, task_q: list) -> None:
+        """[load an entire task queue directly]
+
+        Args:
+            task_q (list): [the task queue]
+        """
+        self.task_queue = task_q.copy()
+
+    def priority_sort_by_period(self) -> None:
+        """[sort the task queue by period(RMA)]
+        """
+        self.task_queue.sort(reverse=True, key=lambda task: task.period)
+
+    def show_task_queue_info(self) -> None:
+        """[show the task queue info]
+        """
+        print("task queue info:")
+        for i in range(len(self.task_queue)):
+            print("\t" + str(i + 1) + ". " + self.task_queue[i].show_task_info())
+
+
+if __name__ == '__main__':
+    task1 = task(name = "task1", p=2.0)
+    task2 = task(name = "task2", p=3.0)
+    task_q1 = task_queue()
+    task_q1.append_task(task1)
+    task_q1.append_task(task2)
+    task_q1.show_task_queue_info()
+    task_q1.priority_sort_by_period()
+    task_q1.show_task_queue_info()
     
 
