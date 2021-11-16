@@ -71,11 +71,19 @@ class task_queue:
             task_q (list): [the task queue]
         """
         self.task_queue = task_q.copy()
+    
+    def size(self) -> int:
+        """[return the size of the queue]
+
+        Returns:
+            int: [size]
+        """
+        return len(self.task_queue)
 
     def priority_sort_by_period(self) -> None:
         """[sort the task queue by period(RMA)]
         """
-        self.task_queue.sort(reverse=True, key=lambda task: task.period)
+        self.task_queue.sort(key=lambda task: task.period)
 
     def show_task_queue_info(self) -> None:
         """[show the task queue info]
@@ -83,7 +91,12 @@ class task_queue:
         print("task queue info:")
         for i in range(len(self.task_queue)):
             print("\t" + str(i + 1) + ". " + self.task_queue[i].show_task_info())
-
+    
+    def return_preiods(self) -> np.array:
+        array_of_peridos = np.zeros(self.size())
+        for i, task in enumerate(self.task_queue):
+            array_of_peridos[i] = task.period
+        return array_of_peridos
 
 if __name__ == '__main__':
     task1 = task(name = "task1", p=2.0)
