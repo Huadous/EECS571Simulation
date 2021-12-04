@@ -16,6 +16,15 @@ def Lcm_of_array(arr, idx):
     b = Lcm_of_array(arr, idx+1)
     return int(a*b/__gcd(a,b)) # __gcd(a,b) is inbuilt library function
 
+def Overhead_Generator():
+    return 0.2
+
+def combine_list(lists):
+    container = []
+    for list_i in lists:
+        container += list_i
+    return list(set(container))
+
 
 if __name__ == '__main__':
     # test case for lcmOfArray

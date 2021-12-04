@@ -93,8 +93,10 @@ class RMA:
         return False 
 
     def RMA_schedule(self):
-        for task in self.task_queue.task_queue:
-            self.job_queue.append_task(task)
+        # for task in self.task_queue.task_queue:
+        #     self.job_queue.append_task(task)
+        # self.job_queue.check_overhead(utils.Overhead_Generator)
+        self.job_queue.load_taskq(self.task_queue)
 
 
 class scheduler:
@@ -127,4 +129,4 @@ if __name__ == '__main__':
     print(rma.schedulablity)
     print(rma.lcm_time)
     rma.RMA_schedule()
-    gantt_charts.gantt_chart_generate(rma.job_queue)
+    gantt_charts.gantt_chart_generate(rma.job_queue, task_q1)

@@ -20,6 +20,8 @@ class task:
         self.execution_time = et
         self.deadline = ddl
         self.periodic = periodic
+        self.priority = 0
+        
 
     def redefine(self, name = "", rt = -1, p = -1, et = -1, ddl = -1, periodic = -1) -> None:
         """[redefine the details for the tasks]
@@ -48,7 +50,7 @@ class task:
     def show_task_info(self) -> str:
         """[show the task info]
         """
-        return "'" + str(self.name) + "': {'release time': " + str(self.release_time) + ", 'period': " + str(self.period) + ", 'WCET': " + str(self.execution_time) + ", 'deadline': " + str(self.deadline) + "}"
+        return "'" + str(self.name) + "': {'release time': " + str(self.release_time) + ", 'period': " + str(self.period) + ", 'WCET': " + str(self.execution_time) + ", 'deadline': " + str(self.deadline) + ", 'priority': " + str(self.priority) + "}"
 
 class task_queue:
     def __init__(self) -> None:
@@ -84,6 +86,8 @@ class task_queue:
         """[sort the task queue by period(RMA)]
         """
         self.task_queue.sort(key=lambda task: task.period)
+        for i, task in enumerate(self.task_queue):
+            task.priority = i
 
     def show_task_queue_info(self) -> None:
         """[show the task queue info]
