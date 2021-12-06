@@ -1,9 +1,12 @@
 import numpy as np
+from numpy.lib import utils
+from dvfs import task_level_dvfs as tld
+import enenrgy_consumption_utils as ecu
 
 # hello world
 
 class task:
-    def __init__(self, name = "", rt = 0, p = 0, et = 0, ddl = 0, periodic = True) -> None:
+    def __init__(self, name = "", rt = 0, p = 0, et = 0, ddl = 0, periodic = True, D = 0) -> None:
         """[initialization for task]
 
         Args:
@@ -17,9 +20,18 @@ class task:
         self.name = name
         self.release_time = rt
         self.period = p
-        self.execution_time = et
+        self.D = ecu.run_time_reverse(et)
+        self.dvfs = tld(self.D)
+        self.execution_time = self.dvfs.execution_time
         self.deadline = ddl
         self.periodic = periodic
+        self.priority = 0
+    
+    def change_to_normal(self):
+        self.execution_time = self.dvfs.execution_time_default
+    
+    def change_to_save_energy(self):
+        self.execution_time = self.dvfs.execution_time
 
     def redefine(self, name = "", rt = -1, p = -1, et = -1, ddl = -1, periodic = -1) -> None:
         """[redefine the details for the tasks]
@@ -48,7 +60,7 @@ class task:
     def show_task_info(self) -> str:
         """[show the task info]
         """
-        return "'" + str(self.name) + "': {'release time': " + str(self.release_time) + ", 'period': " + str(self.period) + ", 'WCET': " + str(self.execution_time) + ", 'deadline': " + str(self.deadline) + "}"
+        return "'" + str(self.name) + "': {'release time': " + str(self.release_time) + ", 'period': " + str(self.period) + ", 'WCET': " + str(self.execution_time) + ", 'deadline': " + str(self.deadline) + ", 'priority': " + str(self.priority) + "}"
 
 class task_queue:
     def __init__(self) -> None:
@@ -84,6 +96,8 @@ class task_queue:
         """[sort the task queue by period(RMA)]
         """
         self.task_queue.sort(key=lambda task: task.period)
+        for i, task in enumerate(self.task_queue):
+            task.priority = i
 
     def show_task_queue_info(self) -> None:
         """[show the task queue info]
@@ -91,9 +105,12 @@ class task_queue:
         print("task queue info:")
         for i in range(len(self.task_queue)):
             print("\t" + str(i + 1) + ". " + self.task_queue[i].show_task_info())
+            print("\t   " + self.task_queue[i].dvfs.show_tld())
     
     def return_preiods(self) -> np.array:
         array_of_peridos = np.zeros(self.size())
+        # if (len(self.task_queue)==0):
+        #     return []
         for i, task in enumerate(self.task_queue):
             array_of_peridos[i] = task.period
         return array_of_peridos
