@@ -251,21 +251,21 @@ class gs:
             for j, gpu in enumerate(CGpair.gpu):
                 if len(gpu.scheduler.job_queue.job_queue) == 0:
                     y[:,j] = np.zeros(len(type))
-                    continue
-                for job in gpu.scheduler.job_queue.job_queue:
-                    if (job.status == type[1] - 1):
-                        y[1][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
-                    elif (job.status == type[2] - 1):
-                        y[2][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
-                    elif (job.status == type[3] - 1):
-                        y[3][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
-                    elif (job.status == type[4] - 1):
-                        y[4][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
-                    elif (job.status == type[5] - 1):
-                        y[5][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
-                    elif (job.status == type[6] - 1):
-                        y[6][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
-                y[:, j] = y[:, j] / gpu.scheduler.job_queue.lcm_time
+                else:
+                    for job in gpu.scheduler.job_queue.job_queue:
+                        if (job.status == type[1] - 1):
+                            y[1][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
+                        elif (job.status == type[2] - 1):
+                            y[2][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
+                        elif (job.status == type[3] - 1):
+                            y[3][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
+                        elif (job.status == type[4] - 1):
+                            y[4][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
+                        elif (job.status == type[5] - 1):
+                            y[5][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
+                        elif (job.status == type[6] - 1):
+                            y[6][j] += job.execute_time_intervals[1] - job.execute_time_intervals[0]
+                    y[:, j] = y[:, j] / gpu.scheduler.job_queue.lcm_time
             y[0] = np.sum(y, axis = 0)
 
 
