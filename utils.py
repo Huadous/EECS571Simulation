@@ -1,4 +1,6 @@
 
+simulation_type = {'dvfs': 0, 'normal': 1}
+energy_type = {'normal': 0, 'tld': 1, 'jld': 2, 'po': 3, 'idle': 4}
 
 # gcd
 def __gcd(a, b):
@@ -16,14 +18,27 @@ def Lcm_of_array(arr, idx):
     b = Lcm_of_array(arr, idx+1)
     return int(a*b/__gcd(a,b)) # __gcd(a,b) is inbuilt library function
 
-def Overhead_Generator():
-    return 0.2
+def P_Overhead_Generator():
+    return 200
+
+def T_Overhead_Generator():
+    return 100
 
 def combine_list(lists):
+    print(lists)
     container = []
     for list_i in lists:
         container += list_i
-    return list(set(container))
+    final = list(set(container))
+    # print(final)
+    final.sort()
+    # print(final)
+    return final
+
+def find_num(txt):
+    for s in txt.split():
+        if s.isdigit():
+            return int(s)
 
 
 if __name__ == '__main__':
