@@ -155,7 +155,7 @@ class gs:
     def check_u(self, type):
         fig = plt.figure(figsize=(20,10))
         if (type == utils.simulation_type['dvfs']):
-            fig.suptitle("CPU-GPU Clusters Scheduling Gantt Charts: On)", fontsize=16)
+            fig.suptitle("CPU-GPU Clusters Scheduling Gantt Charts(DVFS: On)", fontsize=16)
         else:
             fig.suptitle("CPU-GPU Clusters Scheduling Gantt Charts(DVFS: Off)", fontsize=16)
         hand_list = []
